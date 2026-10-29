@@ -3,11 +3,8 @@
 A capstone project for the 2026–2027 NASA Lunabotics Challenge.
 
 **Course:** COMP/IT 491 — Capstone Preparation  
-
 **University:** California State University Channel Islands  
-
-**Department:** Computer Science & Mechatronics
-
+**Department:** Computer Science & Mechatronics  
 **Advisors:** Dr. Reza Abdolee & Dr. Vida Vakilian
 
 ## Team Members
@@ -17,15 +14,16 @@ A capstone project for the 2026–2027 NASA Lunabotics Challenge.
 - Salam Khalaf
 - David Persoon
 
-## Vocabulary Overview:
-- Regolith: Moon dust
-- Berm: A long mound of dirt acting as a barrier
+## Vocabulary Overview
+
+- **Regolith:** Loose surface material, including dust, soil, and rock fragments. The competition uses a lunar regolith simulant.
+- **Berm:** A long mound of material that acts as a barrier.
 
 ## Project Overview and Problem Statement
 
 Our team plans to build a robot that digs up regolith, carries it across an obstacle field, and places it in a specific zone to construct a berm. The project is being developed for **NASA's Lunabotics Challenge**.
 
-The robot will need to operate on loose terrain while avoiding rocks and craters. Our main software challenge is to use LiDAR and other sensors to let the robot locate itself, choose a safe route (without bumping into walls, rocks, or craters), dig up regolith, and construct a berm with it. Locational awareness is a very important issue, since the location of digging and construction need to be static.
+The robot will need to operate on loose terrain while avoiding rocks and craters. Our main software challenge is to use LiDAR and other sensors to let the robot locate itself, choose a safe route, dig up regolith, and construct a berm with it. Accurate position tracking is especially important because the robot needs to travel between designated excavation and construction zones and place material within the berm's target area.
 
 ## Goals and Objectives
 
@@ -35,18 +33,18 @@ The robot will need to operate on loose terrain while avoiding rocks and craters
 4. Automate navigation using LiDAR and sensor data.
 5. Integrate these functions so the robot can complete repeated construction cycles autonomously.
 
-We plan to employ unit & integration testing practices in order to ensure reliability.
+We will use unit tests to check individual software components and integration tests to check how they work together. Repeated simulation and physical testing will help us evaluate reliability.
 
 ## Proposed Features and System Components
 
 - Motors, wheels, and motor controllers
 - Excavation system
 - Regolith storage and dumping system
-- LiDAR sensor (for navigation)
-- Wheel encoders and infared sensors (for sensing wheel movement or any wheel slipping)
-- Onboard computer (higher level computer for sensor data processing and navigation)
-- Microcontroller (lower level computer to orchestrate basic GPIO communication to low-level sensors and motors and deliver that to the onboard computer)
-- Mission state machine (to orchestrate ordering of tasks and memory of current task)
+- LiDAR sensor for obstacle detection, mapping, and navigation
+- Wheel encoders for measuring wheel rotation; infrared sensors are also being evaluated for wheel sensing. Slip detection will require comparing wheel movement with an independent estimate of robot movement.
+- Onboard computer for sensor data processing, navigation, and mission logic
+- Microcontroller for reading sensors, controlling motors through motor drivers, and exchanging commands and feedback with the onboard computer
+- Mission state machine to track the current task and coordinate digging, travel, dumping, and returning
 - Mission Control interface and wireless link
 - Battery, power distribution, and emergency stop
 
