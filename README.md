@@ -74,3 +74,7 @@ We will develop the mechanical hardware and software in parallel. Simulation wil
 | March 2027 | Develop automated dumping, digging, and navigation; connect them through the mission state machine. | Planned |
 | April 2027 | Run repeated tests, address failures, and complete competition documentation. | Planned |
 | May 2027 | Perform final checks and prepare for competition participation, subject to selection and readiness. | Planned |
+
+## Running code
+Meant to be run on Ubuntu 24.04.5 with ROS Jazzy and Gazebo installed.
+Run `./lunabotics.sh` while in the root directory of the project.
