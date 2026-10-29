@@ -3,9 +3,12 @@
 A capstone project for the 2026–2027 NASA Lunabotics Challenge.
 
 **Course:** COMP/IT 491 — Capstone Preparation  
-**Institution:** California State University, Channel Islands  
+
+**University:** California State University Channel Islands  
+
 **Department:** Computer Science & Mechatronics
-**Advisor:** Dr. Reza Abdolee & Dr. Vida Vakilian
+
+**Advisors:** Dr. Reza Abdolee & Dr. Vida Vakilian
 
 ## Team Members
 
