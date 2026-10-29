@@ -1,0 +1,186 @@
+<?xml version="1.0"?>
+
+<robot name="lunabotics" xmlns:xacro="http://www.ros.org/wiki/xacro">
+    <xacro:property name="robot_constants" value="${xacro.load_yaml('$(find lunabotics)/parameters/robot_constants.yaml')}"/>
+
+    <xacro:property name="a" value="${robot_constants['body']['length']}"/>
+    <xacro:property name="b" value="${robot_constants['body']['height']}"/>
+    <xacro:property name="c" value="${robot_constants['body']['width']}"/>
+
+    <xacro:property name="r" value="${robot_constants['wheel']['diameter'] / 2.0}"/>
+    <xacro:property name="d" value="${robot_constants['wheel']['width']}"/>
+    <xacro:property name="caster_r" value="${robot_constants['caster']['diameter'] / 2.0}"/>
+
+    <xacro:property name="s1" value="${b/2+r}"/>
+    <xacro:property name="s2" value="${2*r}"/>
+    <xacro:property name="s3" value="${2*r}"/>
+    <xacro:property name="s4" value="${c/2+d/2}"/>
+
+    <xacro:property name="m1" value="${robot_constants['body']['mass']}"/>
+    <xacro:property name="m2" value="${robot_constants['wheel']['mass']}"/>
+    <xacro:property name="m3" value="${robot_constants['caster']['mass']}"/>
+
+    <xacro:property name="moi_x_body" value="${(1.0/12.0)*m1*(b*b+c*c)}"/>
+    <xacro:property name="moi_y_body" value="${(1.0/12.0)*m1*(a*a+b*b)}"/>
+    <xacro:property name="moi_z_body" value="${(1.0/12.0)*m1*(a*a+c*c)}"/>
+
+    <xacro:property name="moi_wheel" value="${(1.0/12.0)*m2*(3.0*r*r+d*d)}"/>
+    <xacro:property name="moi_z_wheel" value="${0.5*m2*r*r}"/>
+
+    <xacro:property name="moi_caster" value="${(2.0/5.0)*m3*caster_r*caster_r}"/>
+
+    <xacro:macro name="inertia_body">
+        <inertial>
+            <origin xyz="0 0 ${s1}" rpy="0 0 0"/>
+            <mass value="${m1}"/>
+            <inertia ixx="${moi_x_body}" ixy="0" ixz="0" iyy="${moi_y_body}" iyz="0" izz="${moi_z_body}"/>
+        </inertial>
+    </xacro:macro>
+
+    <xacro:macro name="inertia_wheel">
+        <inertial>
+            <origin xyz="0 0 0" rpy="${pi/2} 0 0"/>
+            <mass value="${m2}"/>
+            <inertia ixx="${moi_wheel}" ixy="0" ixz="0" iyy="${moi_wheel}" iyz="0" izz="${moi_z_wheel}"/>
+        </inertial>
+    </xacro:macro>
+
+    <xacro:macro name="inertia_caster_wheel">
+        <inertial>
+            <origin xyz="0 0 0" rpy="${pi/2} 0 0"/>
+            <mass value="${m3}"/>
+            <inertia ixx="${moi_caster}" ixy="0" ixz="0" iyy="${moi_caster}" iyz="0" izz="${moi_caster}"/>
+        </inertial>
+    </xacro:macro>
+
+    <link name="base_footprint"/>
+
+    <joint name="body_link_joint" type="fixed">
+        <parent link="base_footprint"/>
+        <child link="body_link"/>
+        <origin xyz="0 0 0" rpy="0 0 0"/>
+    </joint>
+
+    <link name="body_link">
+        <visual>
+            <origin xyz="0 0 ${s1}" rpy="0 0 0"/>
+            <geometry>
+                <box size="${a} ${c} ${b}"/>
+            </geometry>
+        </visual>
+        <collision>
+            <origin xyz="0 0 ${s1}" rpy="0 0 0"/>
+            <geometry>
+                <box size="${a} ${c} ${b}"/>
+            </geometry>
+        </collision>
+        <xacro:inertia_body/>
+    </link>
+
+    <joint name="wheel1_joint" type="continuous">
+        <parent link="body_link"/>
+        <child  link="wheel1_link"/>
+        <origin xyz="${-s2} ${-s4} ${r}" rpy="0 0 0"/>
+        <axis xyz="0 1 0"/>
+        <limit effort="50000" velocity="10"/>
+        <dynamics damping="1.0" friction="1.0"/>
+    </joint>
+
+    <link name="wheel1_link">
+        <visual>
+            <origin rpy="1.570795 0 0" xyz="0 0 0"/>
+            <geometry>
+                <cylinder length="${d}" radius="${r}"/>
+            </geometry>
+        </visual>
+
+        <collision>
+            <origin rpy="1.570795 0 0" xyz="0 0 0"/>
+            <geometry>
+                <cylinder length="${d}" radius="${r}"/>
+            </geometry>
+        </collision>
+
+        <xacro:inertia_wheel/>
+    </link>
+
+    <joint name="wheel2_joint" type="continuous">
+        <parent link="body_link"/>
+        <child  link="wheel2_link"/>
+        <origin xyz="${-s2} ${s4} ${r}" rpy="0 0 0"/>
+        <axis xyz="0 1 0"/>
+        <limit effort="50000" velocity="10"/>
+        <dynamics damping="1.0" friction="1.0"/>
+    </joint>
+
+    <link name="wheel2_link">
+        <visual>
+            <origin rpy="1.570795 0 0" xyz="0 0 0"/>
+            <geometry>
+                <cylinder length="${d}" radius="${r}"/>
+            </geometry>
+        </visual>
+
+        <collision>
+            <origin rpy="1.570795 0 0" xyz="0 0 0"/>
+            <geometry>
+                <cylinder length="${d}" radius="${r}"/>
+            </geometry>
+        </collision>
+
+        <xacro:inertia_wheel/>
+    </link>
+
+    <joint name="caster_joint" type="fixed">
+        <parent link="body_link"/>
+        <child link="caster_link"/>
+        <origin xyz="${s3} 0 ${r}" rpy="0 0 0"/>
+    </joint>
+
+    <link name="caster_link">
+        <visual>
+            <origin rpy="0 0 0" xyz="0 0 0"/>
+            <geometry>
+                <sphere radius="${caster_r}"/>
+            </geometry>
+        </visual>
+
+        <collision>
+            <origin rpy="0 0 0" xyz="0 0 0"/>
+            <geometry>
+                <sphere radius="${caster_r}"/>
+            </geometry>
+        </collision>
+
+        <xacro:inertia_caster_wheel/>
+    </link>
+
+    <joint name="lidar_joint" type="fixed">
+        <origin xyz="0.0 0 ${b+r}" rpy="0 0 0"/>
+        <parent link="body_link"/>
+        <child link="lidar_link"/>
+        <axis xyz="0 1 0" rpy="0 0 0"/>
+    </joint>
+
+    <link name="lidar_link">
+        <visual>
+            <origin xyz="0 0 ${robot_constants['lidar']['height'] / 2.0}" rpy="0 0 0"/>
+            <geometry>
+                <cylinder length="${robot_constants['lidar']['height']}" radius="${robot_constants['lidar']['radius']}"/>
+            </geometry>
+        </visual>
+
+        <collision name="collision">
+            <origin xyz="0 0 ${robot_constants['lidar']['height'] / 2.0}" rpy="0 0 0"/>
+            <geometry>
+                <cylinder length="${robot_constants['lidar']['height']}" radius="${robot_constants['lidar']['radius']}"/>
+            </geometry>
+        </collision>
+
+        <inertial>
+            <mass value="${robot_constants['lidar']['mass']}"/>
+            <origin xyz="0 0 0" rpy="0 0 0"/>
+            <inertia ixx="${robot_constants['lidar']['mass']}" ixy="0" ixz="0" iyy="${robot_constants['lidar']['mass']}" iyz="0" izz="${robot_constants['lidar']['mass']}"/>
+        </inertial>
+    </link>
+</robot>

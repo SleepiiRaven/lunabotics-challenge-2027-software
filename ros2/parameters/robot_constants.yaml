@@ -1,0 +1,21 @@
+# Shared physical properties for the Lunabotics robot.
+# Dimensions are in meters, masses in kilograms.
+body:
+  length: 1.0
+  width: 0.6
+  height: 0.3
+  mass: 487.8
+
+wheel:
+  diameter: 0.3
+  width: 0.1
+  mass: 19.15586
+
+caster:
+  diameter: 0.3
+  mass: 38.3118
+
+lidar:
+  radius: 0.1
+  height: 0.1
+  mass: 0.000001

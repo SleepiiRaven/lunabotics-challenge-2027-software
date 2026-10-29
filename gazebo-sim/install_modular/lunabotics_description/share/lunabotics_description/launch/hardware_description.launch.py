@@ -1,0 +1,1 @@
+/home/emma/Downloads/lunabotics-challenge-2027-software/lunabotics/gazebo-sim/build_modular/lunabotics_description/launch/hardware_description.launch.py
